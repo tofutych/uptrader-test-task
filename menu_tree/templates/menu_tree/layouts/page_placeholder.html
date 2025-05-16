@@ -1,0 +1,62 @@
+{% extends "menu_tree/base.html" %}
+{% load static menu_tags %}
+{% block title %}{{ page_title|default:"Страница" }} - {{ block.super }}{% endblock %}
+{% block page_specific_css %}
+    <link rel="stylesheet" href="{% static 'menu_tree/css/placeholder.css' %}">
+{% endblock %}
+{% block page_layout %}
+    <div class="container">
+        <aside class="sidebar">
+            <h1>
+                <a href="{% url 'menu_tree:home' %}">Home Page</a>
+            </h1>
+            <hr>
+            <h2>main_menu</h2>
+            <nav class="sidebar-menu">
+                <ul>
+                    {% draw_menu 'main_menu' %}
+                </ul>
+            </nav>
+            {% comment %}
+            <hr>
+            <h2>secondary_menu</h2>
+            <nav class="sidebar-menu">
+                <ul>
+                    {% draw_menu 'secondary_menu' %}
+                </ul>
+            </nav>
+            {% endcomment %}
+        </aside>
+        <main class="content">
+            {% block content %}
+                <h2>{{ page_title }}</h2>
+                <p>{{ page_content }}</p>
+                <p>
+                    Текущий URL (request.path_info): <code>{{ request.path_info }}</code>
+                </p>
+                {% if request.resolver_match %}
+                    <p>
+                        Совпадение URL (request.resolver_match):
+                        <ul>
+                            <li>
+                                <code>namespace: {{ request.resolver_match.namespace }}</code>
+                            </li>
+                            <li>
+                                <code>url_name: {{ request.resolver_match.url_name }}</code>
+                            </li>
+                            <li>
+                                <code>app_name: {{ request.resolver_match.app_name }}</code>
+                            </li>
+                            <li>
+                                <code>args: {{ request.resolver_match.args }}</code>
+                            </li>
+                            <li>
+                                <code>kwargs: {{ request.resolver_match.kwargs }}</code>
+                            </li>
+                        </ul>
+                    </p>
+                {% endif %}
+            {% endblock %}
+        </main>
+    </div>
+{% endblock %}
